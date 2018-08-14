@@ -1,0 +1,10 @@
+
+.zonderbolletjes {
+	list-style: none;
+	margin-bottom: 0.2em;
+	padding: 0;
+}
+
+.linkuitgeschakeld{
+	text-decoration: none;
+}
