@@ -3,5 +3,5 @@
 <nav>
 	<a href="<c:url value="/"/>">Welkom</a>
 	<a href="<c:url value="/brouwers"/>">Brouwers</a>
-	<a href="<c:url value="/winkelwagen"/>">Winkelwagen</a>
+	<a href="<c:url value="/winkelmand"/>">Winkelwagen</a>
 </nav>

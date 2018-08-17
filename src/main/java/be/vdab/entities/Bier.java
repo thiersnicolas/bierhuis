@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.NamedAttributeNode;
+import javax.persistence.NamedEntityGraph;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Digits;
@@ -23,7 +25,9 @@ import org.springframework.format.annotation.NumberFormat.Style;
 
 @Entity
 @Table(name="bieren")
-public class Bier implements Serializable {
+@NamedEntityGraph(name="Bier.metBrouwerEnSoort", attributeNodes= {
+		@NamedAttributeNode("brouwer"), @NamedAttributeNode("soort")})
+public class Bier implements Serializable, Comparable<Bier> {
 	private static final long serialVersionUID = 1L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -44,10 +48,10 @@ public class Bier implements Serializable {
 	@Digits(integer=7, fraction=2)
 	@Min(0)
 	private BigDecimal Alcohol;
-	@NumberFormat(style = Style.CURRENCY)
 	@NotNull
 	@Digits(integer=19, fraction=2)
 	@Min(0)
+	@NumberFormat(pattern="#,##0.##")
 	private BigDecimal prijs;
 	
 	protected Bier() {}
@@ -105,6 +109,18 @@ public class Bier implements Serializable {
 		} else if (!naam.equals(other.naam))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Bier [id=" + id + ", naam=" + naam + ", brouwer=" + brouwer + ", soort=" + soort + ", Alcohol="
+				+ Alcohol + ", prijs=" + prijs + "]";
+	}
+
+
+	@Override
+	public int compareTo(Bier o) {
+		return this.getNaam().compareTo(o.getNaam());
 	}
 	
 	

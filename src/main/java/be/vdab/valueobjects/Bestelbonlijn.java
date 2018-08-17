@@ -1,6 +1,7 @@
 package be.vdab.valueobjects;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
@@ -9,23 +10,34 @@ import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import be.vdab.entities.Bier;
 
 @Embeddable
-public class Bestelbonlijn implements Serializable {
+public class Bestelbonlijn implements Serializable, Comparable<Bestelbonlijn> {
+	public interface AantalValidatie {}
+	
+	
 	private static final long serialVersionUID = 1L;
-	@NotNull
-	@Min(1)
+	@NotNull(groups = AantalValidatie.class)
+	@Min(value=1, groups = AantalValidatie.class)
 	private Integer aantal;
 	@Valid
 	@ManyToOne(optional=false)
 	@JoinColumn(name="bierid")
 	private Bier bier;
+	@NumberFormat(pattern="#,##0.##")
+	private BigDecimal waarde;
 	
-	protected Bestelbonlijn() {}
+	public Bestelbonlijn() {}
 	
 	public Bestelbonlijn(Integer aantal, Bier bier) {
 		this.aantal = aantal;
+		this.bier = bier;
+	}
+	
+	public Bestelbonlijn(Bier bier) {
 		this.bier = bier;
 	}
 
@@ -35,6 +47,10 @@ public class Bestelbonlijn implements Serializable {
 
 	public Bier getBier() {
 		return bier;
+	}
+	
+	public BigDecimal getWaarde() {
+		return bier.getPrijs().multiply(BigDecimal.valueOf(aantal));
 	}
 
 	@Override
@@ -60,6 +76,16 @@ public class Bestelbonlijn implements Serializable {
 		} else if (!bier.equals(other.bier))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Bestelbonlijn [aantal=" + aantal + ", bier=" + bier + "]";
+	}
+
+	@Override
+	public int compareTo(Bestelbonlijn o) {
+		return this.bier.compareTo(o.getBier());
 	}
 	
 	

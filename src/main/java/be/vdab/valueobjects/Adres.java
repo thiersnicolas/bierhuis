@@ -10,29 +10,30 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.Range;
 import org.hibernate.validator.constraints.SafeHtml;
 
+import be.vdab.entities.Bestelbon.GegevensValidatie;
+
 @Embeddable
 public class Adres implements Serializable {
 	private static final long serialVersionUID = 1L;
-	@NotBlank
-	@SafeHtml
-	@Length(min=1, max=50)
+	@NotBlank(groups = GegevensValidatie.class)
+	@SafeHtml(groups = GegevensValidatie.class)
+	@Length(min=1, max=50, groups = GegevensValidatie.class)
 	private String straat;
-	@NotBlank
-	@SafeHtml
-	@Length(min=1, max=50)
+	@NotBlank(groups = GegevensValidatie.class)
+	@SafeHtml(groups = GegevensValidatie.class)
+	@Length(min=1, max=50, groups = GegevensValidatie.class)
 	private String huisNr;
-	@NotNull
-	@Range(min=1000, max=9999)
-	@Length(min=1, max=50)
-	private String postcode;
-	@NotBlank
-	@SafeHtml
-	@Length(min=1, max=50)
+	@NotNull(groups = GegevensValidatie.class)
+	@Range(min=1000, max=9999, groups = GegevensValidatie.class)
+	private Integer postcode;
+	@NotBlank(groups = GegevensValidatie.class)
+	@SafeHtml(groups = GegevensValidatie.class)
+	@Length(min=1, max=50, groups = GegevensValidatie.class)
 	private String gemeente;
 	
 	protected Adres () {}
 	
-	public Adres(String straat, String huisNr, String postcode, String gemeente) {
+	public Adres(String straat, String huisNr, Integer postcode, String gemeente) {
 		this.straat = straat;
 		this.huisNr = huisNr;
 		this.postcode = postcode;
@@ -47,7 +48,7 @@ public class Adres implements Serializable {
 		return huisNr;
 	}
 
-	public String getPostcode() {
+	public Integer getPostcode() {
 		return postcode;
 	}
 
@@ -96,6 +97,12 @@ public class Adres implements Serializable {
 		} else if (!straat.equals(other.straat))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Adres [straat=" + straat + ", huisNr=" + huisNr + ", postcode=" + postcode + ", gemeente=" + gemeente
+				+ "]";
 	}
 	
 	

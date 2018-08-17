@@ -1,14 +1,19 @@
 package be.vdab.entities;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.NamedAttributeNode;
 import javax.persistence.NamedEntityGraph;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -34,7 +39,14 @@ public class Brouwer implements Serializable {
 	private Adres adres;
 	@Min(0)
 	private Integer omzet;
+	@OneToMany
+	@JoinColumn(name="brouwerid")
+	private Set<Bier> bieren;
 	
+	public Set<Bier> getBieren() {
+		return Collections.unmodifiableSet(new TreeSet<Bier>(bieren));
+	}
+
 	protected Brouwer() {}
 
 	public long getId() {
@@ -82,6 +94,11 @@ public class Brouwer implements Serializable {
 		} else if (!naam.equals(other.naam))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "Brouwer [id=" + id + ", naam=" + naam + ", adres=" + adres + ", omzet=" + omzet + "]";
 	}
 	
 	

@@ -54,6 +54,13 @@ public class Soort implements Serializable {
 			return false;
 		return true;
 	}
+
+	@Override
+	public String toString() {
+		return "Soort [id=" + id + ", naam=" + naam + "]";
+	}
+	
+	
 	
 	
 	

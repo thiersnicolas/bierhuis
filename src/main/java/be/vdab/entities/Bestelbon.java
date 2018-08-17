@@ -1,8 +1,11 @@
 package be.vdab.entities;
 
 import java.io.Serializable;
-import java.util.LinkedHashSet;
+import java.math.BigDecimal;
+import java.util.Collections;
+import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 
 import javax.persistence.CollectionTable;
 import javax.persistence.ElementCollection;
@@ -18,33 +21,39 @@ import javax.validation.constraints.NotBlank;
 
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.SafeHtml;
+import org.springframework.format.annotation.NumberFormat;
 
 import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.Bestelbonlijn;
 
 @Entity
-@Table(name="bestelbonlijnen")
+@Table(name = "bestelbonlijnen")
 public class Bestelbon implements Serializable {
+	public interface GegevensValidatie {}
+	
 	private static final long serialVersionUID = 1L;
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
-	@NotBlank
-	@SafeHtml
-	@Length(min=1, max=50)
+	@NotBlank(groups = GegevensValidatie.class)
+	@SafeHtml(groups = GegevensValidatie.class)
+	@Length(min = 1, max = 50, groups = GegevensValidatie.class)
 	private String naam;
 	@Valid
 	@Embedded
 	private Adres adres;
 	@Valid
 	@ElementCollection
-	@CollectionTable(name="bestelbonlijnen", joinColumns= @JoinColumn(name="bestelbonid"))
+	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "bestelbonid"))
 	private Set<Bestelbonlijn> bestelbonlijnen;
-	
-	protected Bestelbon() {}
-	
-	public Bestelbon(String naam, Adres adres) {
-		bestelbonlijnen=new LinkedHashSet<>();
+	@NumberFormat(pattern="#,##0.##")
+	private BigDecimal waarde;
+
+	public Bestelbon() {
+	}
+
+	public Bestelbon(Set<Bestelbonlijn> bestelbonlijnen) {
+		this.bestelbonlijnen = bestelbonlijnen;
 	}
 
 	public long getId() {
@@ -60,6 +69,33 @@ public class Bestelbon implements Serializable {
 	}
 
 	public Set<Bestelbonlijn> getBestelbonlijnen() {
-		return bestelbonlijnen;
+		return Collections.unmodifiableSet(new TreeSet<Bestelbonlijn>(bestelbonlijnen));
+	}
+
+	public boolean addBestelbonlijn(@Valid Bestelbonlijn bestelbonlijn) {
+		return bestelbonlijnen.add(bestelbonlijn);
+	}
+
+	public Optional<Bestelbonlijn> getBestelbonlijn(@Valid Bier bier) {
+		for (Bestelbonlijn bestelbonlijn : bestelbonlijnen) {
+			if (bestelbonlijn.getBier().equals(bier)) {
+				return Optional.ofNullable(bestelbonlijn);
+			}
+		}
+		return Optional.empty();
+	}
+
+	public BigDecimal getWaarde() {
+		BigDecimal waarde = new BigDecimal(0);
+		for (Bestelbonlijn bestelbonlijn : bestelbonlijnen) {
+			waarde = waarde.add(bestelbonlijn.getWaarde());
+		}
+		return waarde;
+	}
+
+	@Override
+	public String toString() {
+		return "Bestelbon [id=" + id + ", naam=" + naam + ", adres=" + adres + ", bestelbonlijnen=" + bestelbonlijnen
+				+ "]";
 	}
 }

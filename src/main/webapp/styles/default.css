@@ -8,3 +8,12 @@
 .linkuitgeschakeld{
 	text-decoration: none;
 }
+
+dd.attribuut {
+	margin-left: 0;
+	margin-bottom: 0.5em;
+}
+
+td.rechts{
+	text-align: right;
+}

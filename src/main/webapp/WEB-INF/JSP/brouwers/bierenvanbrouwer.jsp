@@ -5,18 +5,18 @@
 <!doctype html>
 <html>
 <head>
-<v:head title="Brouwers" />
+<v:head title="Bieren van brouwer" />
 </head>
 
 <body>
 	<v:menu />
-	<h1>Brouwers</h1>
+	<h1>${brouwer.naam} (${brouwer.adres.gemeente})</h1>
 	<ul class="zonderbolletjes">
-		<c:forEach items='${brouwers}' var='brouwer'>
-			<spring:url value="/brouwers/vanbrouwer/{id}" var="url">
-				<spring:param name="id" value="${brouwer.id}"/>
+		<c:forEach items='${brouwer.bieren}' var='bier'>
+			<spring:url value="/bieren/{id}" var="url">
+				<spring:param name="id" value="${bier.id}"/>
 			</spring:url>
-			<li><a class="linkuitgeschakeld" href="${url}">${brouwer.naam} (${brouwer.adres.gemeente})</a></li>
+			<li><a class="linkuitgeschakeld" href="${url}">${bier.naam}</a></li>
 		</c:forEach>
 	</ul>
 </body>

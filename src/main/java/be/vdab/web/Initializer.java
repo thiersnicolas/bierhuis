@@ -30,7 +30,8 @@ public class Initializer extends AbstractAnnotationConfigDispatcherServletInitia
 	
 	@Override
 	protected Filter[] getServletFilters(){
-		return new Filter[] {new CharacterEncodingFilter("UTF-8"), new OpenEntityManagerInViewFilter()};
+		return new Filter[] { new CharacterEncodingFilter("UTF-8"),
+				new OpenEntityManagerInViewFilter() };
 	}
 
 }

@@ -1,8 +1,10 @@
 package be.vdab.web;
 
-import java.util.List;
+import java.util.Map;
 
 public interface Winkelmand {
-	void addBestellijn(WinkelmandLijn lijn);
-	List<WinkelmandLijn> findWinkelmandLijnen();
+	boolean addWinkelmandlijn(long productId, int aantal);
+	Map<Long, Integer> getWinkelmandMap();
+	void setWinkelmandMap(Map<Long, Integer> winkelmand);
+	
 }
