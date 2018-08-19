@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 
@@ -27,7 +28,7 @@ import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.Bestelbonlijn;
 
 @Entity
-@Table(name = "bestelbonlijnen")
+@Table(name = "bestelbonnen")
 public class Bestelbon implements Serializable {
 	public interface GegevensValidatie {}
 	
@@ -46,6 +47,7 @@ public class Bestelbon implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "bestelbonid"))
 	private Set<Bestelbonlijn> bestelbonlijnen;
+	@Transient
 	@NumberFormat(pattern="#,##0.##")
 	private BigDecimal waarde;
 

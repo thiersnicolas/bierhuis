@@ -49,7 +49,7 @@
 				</form:label>
 			</dt>
 			<dd class="attribuut">
-				<form:input path="naam" />
+				<form:input path="naam" autofocus='autofocus'/>
 			</dd>
 
 			<dt>

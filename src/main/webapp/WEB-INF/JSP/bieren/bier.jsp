@@ -16,22 +16,22 @@
 		<dt>
 			<b>Alcohol</b>
 		</dt>
-		<dd class="attribuut">${bier.alcohol}&#37;</dd>
+		<dd class="attribuut">${bestelbonlijn.bier.alcohol}&#37;</dd>
 
 		<dt>
 			<b>Prijs</b>
 		</dt>
-		<dd class="attribuut">${bier.prijs}&euro;</dd>
+		<dd class="attribuut">${bestelbonlijn.bier.prijs}&euro;</dd>
 
 		<dt>
 			<b>Soort</b>
 		</dt>
-		<dd class="attribuut">${bier.soort.naam}</dd>
+		<dd class="attribuut">${bestelbonlijn.bier.soort.naam}</dd>
 
 		<dt>
 			<b>Brouwer</b>
 		</dt>
-		<dd class="attribuut">${bier.brouwer.naam}</dd>
+		<dd class="attribuut">${bestelbonlijn.bier.brouwer.naam}</dd>
 	</dl>
 
 	<spring:url value="/bieren" var="url">
@@ -41,7 +41,7 @@
 			<dt>
 				<form:label path="aantal">
 					<b>Aantal</b>
-					<form:errors path="aantal" />
+					<form:errors path="aantal" autofocus='autofocus'/>
 				</form:label>
 			</dt>
 			<dd class="attribuut">

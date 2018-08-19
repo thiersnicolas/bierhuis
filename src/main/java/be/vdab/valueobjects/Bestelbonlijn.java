@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import javax.persistence.Embeddable;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Transient;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -27,6 +28,7 @@ public class Bestelbonlijn implements Serializable, Comparable<Bestelbonlijn> {
 	@ManyToOne(optional=false)
 	@JoinColumn(name="bierid")
 	private Bier bier;
+	@Transient
 	@NumberFormat(pattern="#,##0.##")
 	private BigDecimal waarde;
 	

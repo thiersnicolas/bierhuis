@@ -53,25 +53,18 @@ public class BierController {
 
 
 	@PostMapping
-	String addToWinkelmand(@Validated(Bestelbonlijn.AantalValidatie.class) Bestelbonlijn bestelbonlijn, BindingResult bindingResult, SessionStatus sessionStatus) {
+	ModelAndView addToWinkelmand(@Validated(Bestelbonlijn.AantalValidatie.class) Bestelbonlijn bestelbonlijn, BindingResult bindingResult, SessionStatus sessionStatus) {
 		if (bindingResult.hasErrors()) {
-			return BIER_VIEW;
+			return new ModelAndView(BIER_VIEW).addObject(bestelbonlijn);
 		} else {
-			winkelmand.addWinkelmandlijn(bestelbonlijn.getBier().getId(), bestelbonlijn.getAantal());
+			winkelmand.setWinkelmandlijn(bestelbonlijn.getBier().getId(), bestelbonlijn.getAantal());
 			sessionStatus.setComplete();
-			return REDIRECT_URL_NA_ADDTOWINKELMAND;
+			return new ModelAndView(REDIRECT_URL_NA_ADDTOWINKELMAND);
 		}
 	}
 
 	@InitBinder("bestelbonlijn")
 	void initBinderBestelbonlijn(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
-	@InitBinder("bier")
-	void initBinderBier(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}@InitBinder("soort")
-	void initBinderSoort(WebDataBinder binder) {
 		binder.initDirectFieldAccess();
 	}
 }

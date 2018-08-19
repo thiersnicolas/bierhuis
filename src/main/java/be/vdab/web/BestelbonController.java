@@ -10,6 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.InitBinder;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.SessionAttributes;
@@ -28,7 +29,11 @@ import be.vdab.valueobjects.Bestelbonlijn;
 @SessionAttributes("bestelbon")
 public class BestelbonController {
 	private static final String WINKELWAGEN_VIEW = "/bestelbonnen/winkelwagen";
-	private static final String REDIRECT_URL_BESTELBON_BEVESTIGEN_VIEW = "redirect:/bestelbonnen/bevestigen";
+	private static final String BESTELBON_BEVESTIGEN_VIEW = "/bestelbonnen/bevestigen";
+	
+	
+	private static final String REDIRECT_URL_BESTELBON_BEVESTIGEN_VIEW = "redirect:/winkelmand/{bestelbon}/bevestigen";
+	private static final String REDIRECT_URL_WINKELMAND_LEEG = "redirect:/";
 	
 	private BestelbonService bestelbonService;
 	private BierService bierService;
@@ -44,12 +49,20 @@ public class BestelbonController {
 	ModelAndView bestelbonWeergeven() {
 		Set<Bestelbonlijn> bestelbonlijnen = new TreeSet<>();
 		Map<Long, Integer> winkelmandMap = winkelmand.getWinkelmandMap();
+		if (winkelmandMap.isEmpty()) {
+			return new ModelAndView(REDIRECT_URL_WINKELMAND_LEEG);
+		}
 		for (Bier bier:bierService.findByIdIn(winkelmandMap.keySet())) {
 			Bestelbonlijn bestelbonlijn = new Bestelbonlijn(winkelmandMap.get(bier.getId()), bier);
 			bestelbonlijnen.add(bestelbonlijn);
 		}
 		Bestelbon bestelbon= new Bestelbon(bestelbonlijnen);
 		return new ModelAndView(WINKELWAGEN_VIEW).addObject(bestelbon);
+	}
+	
+	@GetMapping("{bestelbon}/bevestigen")
+	ModelAndView bestelbonBevestigen(@PathVariable Bestelbon bestelbon) {
+		return new ModelAndView(BESTELBON_BEVESTIGEN_VIEW).addObject(bestelbon);
 	}
 	
 	@PostMapping

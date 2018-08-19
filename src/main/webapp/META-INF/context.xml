@@ -2,6 +2,6 @@
 <Context path='/bierhuis'>
 	<Resource name='jdbc/bierhuis' type='javax.sql.DataSource'
 		driverClassName='com.mysql.jdbc.Driver'
-		url='jdbc:mysql://localhost/bierhuis?useSSL=false'
+		url='jdbc:mysql://localhost/bierhuis?useSSL=false&amp;useUnicode=true&amp;useJDBCCompliantTimezoneShift=true&amp;useLegacyDatetimeCode=false&amp;serverTimezone=UTC'
 		username='cursist' password='cursist' closeMethod='close' />
 </Context>
