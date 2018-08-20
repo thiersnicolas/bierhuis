@@ -59,7 +59,7 @@
 				</form:label>
 			</dt>
 			<dd class="attribuut">
-				<form:input path="adres.straat" />
+				<form:input path="adres.straat" autofocus='autofocus'/>
 			</dd>
 		</dl>
 
@@ -70,13 +70,13 @@
 			</form:label>
 		</dt>
 		<dd class="attribuut">
-			<form:input path="adres.huisNr" />
+			<form:input path="adres.huisNr" autofocus='autofocus'/>
 		</dd>
 
 		<dt>
 			<form:label path="adres.postcode">
 				<b>Postcode</b>
-				<form:errors path="adres.postcode" />
+				<form:errors path="adres.postcode" autofocus='autofocus'/>
 			</form:label>
 		</dt>
 		<dd class="attribuut">
@@ -90,7 +90,7 @@
 			</form:label>
 		</dt>
 		<dd class="attribuut">
-			<form:input path="adres.gemeente" />
+			<form:input path="adres.gemeente" autofocus='autofocus'/>
 		</dd>
 
 		<input type="submit" value="Als bestelbon toevoegen">

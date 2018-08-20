@@ -15,25 +15,24 @@ public class BrouwerController {
 	private static final String BROUWERS_VIEW = "brouwers/brouwers";
 	private static final String BIEREN_VIEW = "brouwers/bierenvanbrouwer";
 
-	private static final String REDIRECT_URL_BROUWER_NIET_GEVONDEN = "redirect:/brouwers";	
-	
+	private static final String REDIRECT_URL_BROUWER_NIET_GEVONDEN = "redirect:/brouwers";
+
 	private final BrouwerService brouwerService;
-	
+
 	public BrouwerController(BrouwerService brouwerService) {
 		this.brouwerService = brouwerService;
 	}
-	
+
 	@GetMapping
 	ModelAndView findAll() {
 		return new ModelAndView(BROUWERS_VIEW).addObject("brouwers", brouwerService.findAll());
 	}
-	
+
 	@GetMapping("vanbrouwer/{brouwer}")
 	ModelAndView bierenPerBrouwer(@PathVariable Brouwer brouwer) {
-		if (brouwer==null) {
+		if (brouwer == null) {
 			return new ModelAndView(REDIRECT_URL_BROUWER_NIET_GEVONDEN);
 		}
-		return new ModelAndView(BIEREN_VIEW)
-				.addObject(brouwer);
+		return new ModelAndView(BIEREN_VIEW).addObject(brouwer);
 	}
 }

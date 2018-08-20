@@ -7,13 +7,12 @@ import java.util.TreeMap;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.annotation.SessionScope;
 
-
 @Component
 @SessionScope
 public class DefaultWinkelmand implements Winkelmand, Serializable {
 	private static final long serialVersionUID = 1L;
 	private Map<Long, Integer> winkelmandMap;
-	
+
 	protected DefaultWinkelmand() {
 		winkelmandMap = new TreeMap<>();
 	}
@@ -35,5 +34,10 @@ public class DefaultWinkelmand implements Winkelmand, Serializable {
 	@Override
 	public void setWinkelmandMap(Map<Long, Integer> winkelmandMap) {
 		this.winkelmandMap = winkelmandMap;
+	}
+
+	@Override
+	public void clearWinkelmand() {
+		winkelmandMap.clear();
 	}
 }

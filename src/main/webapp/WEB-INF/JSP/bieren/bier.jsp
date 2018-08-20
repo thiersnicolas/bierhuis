@@ -16,12 +16,12 @@
 		<dt>
 			<b>Alcohol</b>
 		</dt>
-		<dd class="attribuut">${bestelbonlijn.bier.alcohol}&#37;</dd>
+		<dd class="attribuut"><spring:eval expression='bestelbonlijn.bier.alcohol'/> &#37;</dd>
 
 		<dt>
 			<b>Prijs</b>
 		</dt>
-		<dd class="attribuut">${bestelbonlijn.bier.prijs}&euro;</dd>
+		<dd class="attribuut"><spring:eval expression='bestelbonlijn.bier.prijs'/> &euro;</dd>
 
 		<dt>
 			<b>Soort</b>
@@ -41,11 +41,11 @@
 			<dt>
 				<form:label path="aantal">
 					<b>Aantal</b>
-					<form:errors path="aantal" autofocus='autofocus'/>
+					<form:errors path="aantal"/>
 				</form:label>
 			</dt>
 			<dd class="attribuut">
-				<form:input path="aantal" />
+				<form:input path="aantal" autofocus='autofocus'/>
 			</dd>
 		</dl>
 		

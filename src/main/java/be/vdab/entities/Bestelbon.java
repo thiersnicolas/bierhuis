@@ -3,7 +3,6 @@ package be.vdab.entities;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.TreeSet;
 
@@ -23,6 +22,7 @@ import javax.validation.constraints.NotBlank;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.SafeHtml;
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 import be.vdab.valueobjects.Adres;
 import be.vdab.valueobjects.Bestelbonlijn;
@@ -48,7 +48,7 @@ public class Bestelbon implements Serializable {
 	@CollectionTable(name = "bestelbonlijnen", joinColumns = @JoinColumn(name = "bestelbonid"))
 	private Set<Bestelbonlijn> bestelbonlijnen;
 	@Transient
-	@NumberFormat(pattern="#,##0.##")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal waarde;
 
 	public Bestelbon() {
@@ -56,6 +56,10 @@ public class Bestelbon implements Serializable {
 
 	public Bestelbon(Set<Bestelbonlijn> bestelbonlijnen) {
 		this.bestelbonlijnen = bestelbonlijnen;
+		waarde = new BigDecimal(0);
+		for (Bestelbonlijn bestelbonlijn : bestelbonlijnen) {
+			waarde = waarde.add(bestelbonlijn.getWaarde());
+		}
 	}
 
 	public long getId() {
@@ -74,21 +78,8 @@ public class Bestelbon implements Serializable {
 		return Collections.unmodifiableSet(new TreeSet<Bestelbonlijn>(bestelbonlijnen));
 	}
 
-	public boolean addBestelbonlijn(@Valid Bestelbonlijn bestelbonlijn) {
-		return bestelbonlijnen.add(bestelbonlijn);
-	}
-
-	public Optional<Bestelbonlijn> getBestelbonlijn(@Valid Bier bier) {
-		for (Bestelbonlijn bestelbonlijn : bestelbonlijnen) {
-			if (bestelbonlijn.getBier().equals(bier)) {
-				return Optional.ofNullable(bestelbonlijn);
-			}
-		}
-		return Optional.empty();
-	}
-
 	public BigDecimal getWaarde() {
-		BigDecimal waarde = new BigDecimal(0);
+		waarde = new BigDecimal(0);
 		for (Bestelbonlijn bestelbonlijn : bestelbonlijnen) {
 			waarde = waarde.add(bestelbonlijn.getWaarde());
 		}

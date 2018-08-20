@@ -12,33 +12,36 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 import be.vdab.entities.Bier;
 
 @Embeddable
 public class Bestelbonlijn implements Serializable, Comparable<Bestelbonlijn> {
-	public interface AantalValidatie {}
-	
-	
+	public interface AantalValidatie {
+	}
+
 	private static final long serialVersionUID = 1L;
 	@NotNull(groups = AantalValidatie.class)
-	@Min(value=1, groups = AantalValidatie.class)
+	@Min(value = 1, groups = AantalValidatie.class)
 	private Integer aantal;
 	@Valid
-	@ManyToOne(optional=false)
-	@JoinColumn(name="bierid")
+	@ManyToOne(optional = false)
+	@JoinColumn(name = "bierid")
 	private Bier bier;
 	@Transient
-	@NumberFormat(pattern="#,##0.##")
+	@NumberFormat(style = Style.NUMBER)
 	private BigDecimal waarde;
-	
-	public Bestelbonlijn() {}
-	
+
+	public Bestelbonlijn() {
+	}
+
 	public Bestelbonlijn(Integer aantal, Bier bier) {
 		this.aantal = aantal;
 		this.bier = bier;
+		this.waarde = bier.getPrijs().multiply(BigDecimal.valueOf(aantal));
 	}
-	
+
 	public Bestelbonlijn(Bier bier) {
 		this.bier = bier;
 	}
@@ -50,7 +53,7 @@ public class Bestelbonlijn implements Serializable, Comparable<Bestelbonlijn> {
 	public Bier getBier() {
 		return bier;
 	}
-	
+
 	public BigDecimal getWaarde() {
 		return bier.getPrijs().multiply(BigDecimal.valueOf(aantal));
 	}
@@ -89,8 +92,5 @@ public class Bestelbonlijn implements Serializable, Comparable<Bestelbonlijn> {
 	public int compareTo(Bestelbonlijn o) {
 		return this.bier.compareTo(o.getBier());
 	}
-	
-	
-	
-	
+
 }

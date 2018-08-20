@@ -30,11 +30,10 @@ import be.vdab.valueobjects.Bestelbonlijn;
 public class BestelbonController {
 	private static final String WINKELWAGEN_VIEW = "/bestelbonnen/winkelwagen";
 	private static final String BESTELBON_BEVESTIGEN_VIEW = "/bestelbonnen/bevestigen";
-	
-	
+
 	private static final String REDIRECT_URL_BESTELBON_BEVESTIGEN_VIEW = "redirect:/winkelmand/{bestelbon}/bevestigen";
 	private static final String REDIRECT_URL_WINKELMAND_LEEG = "redirect:/";
-	
+
 	private BestelbonService bestelbonService;
 	private BierService bierService;
 	private Winkelmand winkelmand;
@@ -44,7 +43,7 @@ public class BestelbonController {
 		this.winkelmand = winkelmand;
 		this.bierService = bierService;
 	}
-	
+
 	@GetMapping
 	ModelAndView bestelbonWeergeven() {
 		Set<Bestelbonlijn> bestelbonlijnen = new TreeSet<>();
@@ -52,51 +51,35 @@ public class BestelbonController {
 		if (winkelmandMap.isEmpty()) {
 			return new ModelAndView(REDIRECT_URL_WINKELMAND_LEEG);
 		}
-		for (Bier bier:bierService.findByIdIn(winkelmandMap.keySet())) {
+		for (Bier bier : bierService.findByIdIn(winkelmandMap.keySet())) {
 			Bestelbonlijn bestelbonlijn = new Bestelbonlijn(winkelmandMap.get(bier.getId()), bier);
 			bestelbonlijnen.add(bestelbonlijn);
 		}
-		Bestelbon bestelbon= new Bestelbon(bestelbonlijnen);
+		Bestelbon bestelbon = new Bestelbon(bestelbonlijnen);
 		return new ModelAndView(WINKELWAGEN_VIEW).addObject(bestelbon);
 	}
-	
+
 	@GetMapping("{bestelbon}/bevestigen")
 	ModelAndView bestelbonBevestigen(@PathVariable Bestelbon bestelbon) {
 		return new ModelAndView(BESTELBON_BEVESTIGEN_VIEW).addObject(bestelbon);
 	}
-	
+
 	@PostMapping
-	ModelAndView bestelbonVerwerken(@Validated(Bestelbon.GegevensValidatie.class) Bestelbon bestelbon, BindingResult bindingResult, RedirectAttributes redirectAttributes, SessionStatus sessionStatus) {
+	ModelAndView bestelbonVerwerken(@Validated(Bestelbon.GegevensValidatie.class) Bestelbon bestelbon,
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, SessionStatus sessionStatus) {
 		if (bindingResult.hasErrors()) {
 			return new ModelAndView(WINKELWAGEN_VIEW);
 		} else {
-			System.out.println(bestelbon.getAdres().toString());
-			bestelbon.getBestelbonlijnen().stream().forEach(bestelbonlijn->System.out.println(bestelbonlijn.toString()));
 			bestelbonService.create(bestelbon);
 			redirectAttributes.addAttribute(bestelbon);
 			sessionStatus.setComplete();
+			winkelmand.clearWinkelmand();
 			return new ModelAndView(REDIRECT_URL_BESTELBON_BEVESTIGEN_VIEW);
 		}
 	}
-	
-	@InitBinder("bestelbonlijn")
-	void initBinderBestelbonlijn(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
-	@InitBinder("bier")
-	void initBinderBier(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
-	@InitBinder("soort")
-	void initBinderSoort(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
+
 	@InitBinder("bestelbon")
 	void initBinderBestelbon(WebDataBinder binder) {
-		binder.initDirectFieldAccess();
-	}
-	@InitBinder("brouwer")
-	void initBinderBrouwer(WebDataBinder binder) {
 		binder.initDirectFieldAccess();
 	}
 }

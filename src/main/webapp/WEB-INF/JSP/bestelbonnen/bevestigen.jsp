@@ -7,6 +7,6 @@
 </head>
 <body>
 	<v:menu />
-	<h1>We hebben uw bestelling ${bestelbon.id} goed ontvangen</h1>
+	<h1>Je winkelwagentje is bevestigd als bestelbon ${bestelbon.id}</h1>
 </body>
 </html>

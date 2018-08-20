@@ -11,13 +11,13 @@ import be.vdab.services.BierService;
 @RequestMapping("/")
 public class IndexController {
 	private static final String VIEW = "index";
-	
+
 	private final BierService bierService;
-	
+
 	public IndexController(BierService bierService) {
 		this.bierService = bierService;
 	}
-	
+
 	@GetMapping
 	ModelAndView index() {
 		return new ModelAndView(VIEW).addObject("aantalBieren", bierService.findAantalBieren());

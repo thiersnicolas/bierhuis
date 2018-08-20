@@ -38,8 +38,6 @@ public class BierController {
 		if (bier==null) {
 			return new ModelAndView(REDIRECT_URL_BIER_NIET_GEVONDEN);
 		}
-		System.out.println(bier.toString());
-		System.out.println(winkelmand.getWinkelmandMap().isEmpty());
 		ModelAndView modelAndView = new ModelAndView(BIER_VIEW);
 		Map<Long, Integer> winkelmandMap = winkelmand.getWinkelmandMap();
 		Bestelbonlijn bestelbonlijn;

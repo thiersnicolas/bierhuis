@@ -43,7 +43,7 @@ public class Bier implements Serializable, Comparable<Bier> {
 	@ManyToOne(fetch = FetchType.LAZY, optional=false)
 	@JoinColumn(name="soortid")
 	private Soort soort;
-	@NumberFormat(style = Style.NUMBER)
+	@NumberFormat(style=Style.NUMBER)
 	@NotNull
 	@Digits(integer=7, fraction=2)
 	@Min(0)
@@ -51,7 +51,7 @@ public class Bier implements Serializable, Comparable<Bier> {
 	@NotNull
 	@Digits(integer=19, fraction=2)
 	@Min(0)
-	@NumberFormat(pattern="#,##0.##")
+	@NumberFormat(style=Style.NUMBER)
 	private BigDecimal prijs;
 	
 	protected Bier() {}

@@ -1,6 +1,5 @@
 package be.vdab.web;
 
-
 import javax.servlet.Filter;
 
 import org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter;
@@ -11,27 +10,26 @@ import be.vdab.datasource.DataSourceConfig;
 import be.vdab.repositories.RepositoriesConfig;
 import be.vdab.services.ServicesConfig;
 
-public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer{
+public class Initializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return new Class<?>[] {RepositoriesConfig.class, ServicesConfig.class, DataSourceConfig.class};
+		return new Class<?>[] { RepositoriesConfig.class, ServicesConfig.class, DataSourceConfig.class };
 	}
 
 	@Override
 	protected Class<?>[] getServletConfigClasses() {
-		return new Class<?>[] {ControllerConfig.class};
+		return new Class<?>[] { ControllerConfig.class };
 	}
 
 	@Override
 	protected String[] getServletMappings() {
-		return new String[] {"/"};
+		return new String[] { "/" };
 	}
-	
+
 	@Override
-	protected Filter[] getServletFilters(){
-		return new Filter[] { new CharacterEncodingFilter("UTF-8"),
-				new OpenEntityManagerInViewFilter() };
+	protected Filter[] getServletFilters() {
+		return new Filter[] { new CharacterEncodingFilter("UTF-8"), new OpenEntityManagerInViewFilter() };
 	}
 
 }
